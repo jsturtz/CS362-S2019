@@ -34,22 +34,31 @@ int main() {
   // TEST 1 - HandCount increased by two
   int oldCount = G.handCount[thisPlayer];
   int newCount = testG.handCount[thisPlayer];
-  assert(oldCount + 2 == newCount);
+  if (oldCount + 2 == newCount) printf("PASSED: HandCount increased by 2\n"); 
+  else printf("FAILED: Expected HandCount == %d, but HandCount == %d\n", newCount, oldCount);
  
   // TEST 2 - The two new cards are treasures
-  printf("TEST 2 - New cards are treasures");
   int card1 = testG.hand[thisPlayer][oldCount];
   int card2 = testG.hand[thisPlayer][oldCount+1];
-  
-  assert(card1 <= gold && card1 >= copper);
-  assert(card2 <= gold && card2 >= copper);
-   
+  if ((card1 <= gold && card1 >= copper) || (card2 <= gold && card2 >= copper)) printf("PASSED: Newly added cards are treasures\n");
+  else printf("FAILED: At least one newly added cards is not a treasure\n");
   
   // TEST 3 - The original hand remains unchanged
-  //
-  // TEST 4 - Any revealed treasures were put automatically into hand
-  printf("TEST 1 - HandCount increased by two");
+  int pass = 1;
+  for (int i = 0; i < G.handCount[thisPlayer]; i++) {
+    if (G.hand[thisPlayer][i] != testG.hand[thisPlayer][i]) {
+      pass = 0;
+    }
+  }
+  if (pass) printf("PASSED: Original cards in hand unchanged");
+  else printf("FAILED: Original cards in hand have been changed");
+
+  // TEST 4 - All revealed treasures were put automatically into hand (no treasures were discarded)
+  
+  // get all cards that were drawn
+
   for (int i = 1; i < numPlayers; i++) {
+
   }
   
   //
