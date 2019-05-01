@@ -1,0 +1,189 @@
+Result for running Dominion tests:
+unittest1.c:
+TESTING FUNCTION "AdventurerEffect"
+Input Case 1: When the top two cards are treasures
+	❌FAILED: Adventurer card was not properly played, i.e. added to playedCard array
+	❌FAILED: Handcount should have increased by 1, instead increased by 2
+	PASSED: Newly added cards are treasures
+	PASSED: Original cards in hand unchanged
+	PASSED: Total card count is the same: deck + discard + hand + played
+	PASSED: Non-player-related gamestate has not changed
+	PASSED: Other player variables have not been affected
+	PASSED: Player drew until and only until second treasure was found
+	PASSED: Discard Piles are identical
+Input Case 2: There are non-treasures before the two treasures, but there are at least two treasures in deck
+	❌FAILED: Adventurer card was not properly played, i.e. added to playedCard array
+	❌FAILED: Handcount should have increased by 1, instead increased by 2
+	PASSED: Newly added cards are treasures
+	PASSED: Original cards in hand unchanged
+	❌FAILED: Total card count of deck (deck + discard + hand + played) greater than after card effect
+	PASSED: Non-player-related gamestate has not changed
+	PASSED: Other player variables have not been affected
+	PASSED: Player drew until and only until second treasure was found
+	❌FAILED: Discard should have increased by 2, but instead increased by 1
+
+File 'dominion.c'
+Lines executed:17.16% of 606
+Creating 'dominion.c.gcov'
+
+cardtest1.c:
+TESTING FUNCTION "cardEffect" for Adventurer card
+Input Case 3: There is only one treasure in deck, so second treasure must be found after shuffling discard
+	❌FAILED: Adventurer card was not properly played, i.e. added to playedCard array
+	❌FAILED: Handcount should have increased by 1, instead increased by 2
+	PASSED: Newly added cards are treasures
+	PASSED: Original cards in hand unchanged
+	❌FAILED: Total card count of deck (deck + discard + hand + played) greater than after card effect
+	PASSED: Non-player-related gamestate has not changed
+	PASSED: Other player variables have not been affected
+	PASSED: Player discard pile has no treasures
+Input Case 4: There are no treasures in deck, so second treasure must be found after shuffling discard
+	❌FAILED: Adventurer card was not properly played, i.e. added to playedCard array
+	❌FAILED: Handcount should have increased by 1, instead increased by 2
+	PASSED: Newly added cards are treasures
+	PASSED: Original cards in hand unchanged
+	❌FAILED: Total card count of deck (deck + discard + hand + played) greater than after card effect
+	PASSED: Non-player-related gamestate has not changed
+	PASSED: Other player variables have not been affected
+	PASSED: Player discard pile has no treasures
+
+File 'dominion.c'
+Lines executed:21.29% of 606
+Creating 'dominion.c.gcov'
+
+unittest2.c:
+TESTING FUNCTION "SmithyEffect"
+Input Case 1: Deck has more than three cards in it
+	PASSED: HandCount increased by 2
+	PASSED: Original cards in hand unchanged except for smithy played
+	PASSED: Total card count is the same: deck + discard + hand + played
+	❌FAILED: Gamestate numBuys has changed
+	PASSED: Other player variables have not been affected
+	PASSED: Smithy card was properly played, i.e. smithy added to playedCard array
+	PASSED: Cards added to hand match top three cards of deck
+	PASSED: Deck has decreased by exactly three
+	PASSED: Discard pile has not changed
+
+File 'dominion.c'
+Lines executed:17.33% of 606
+Creating 'dominion.c.gcov'
+
+cardtest2.c:
+TESTING FUNCTION "cardEffect" for card Smithy
+Input Case 2: Deck has only two cards left
+	PASSED: HandCount increased by 2
+	PASSED: Original cards in hand unchanged except for smithy played
+	PASSED: Total card count is the same: deck + discard + hand + played
+	❌FAILED: Gamestate numBuys has changed
+	PASSED: Other player variables have not been affected
+	PASSED: Smithy card was properly played, i.e. smithy added to playedCard array
+	PASSED: The two remaining cards on deck were added to hand
+	PASSED: Discard count is 0
+
+File 'dominion.c'
+Lines executed:18.98% of 606
+Creating 'dominion.c.gcov'
+
+unittest3.c:
+TESTING FUNCTION "CouncilRoomEffect"
+Player 0 = active player that plays council room
+Player 1 = non-active player
+Input Case 1: Deck has more than four cards in it for active, more than one for non-active
+	❌FAILED: For Player 0, expected handcount to increase by 3, but increased by 2
+	PASSED: For Player 1, HandCount increased by 1
+	PASSED: For player 0, original cards in hand unchanged except for council room played
+	PASSED: For player 1, original cards in hand unchanged except for council room played
+	PASSED: For player 0, total card count is the same
+	PASSED: For player 1, total card count is the same
+	PASSED: Council Room card was properly played, i.e. added to playedCard array
+	PASSED: Non-player-related gamestate has not changed except for numBuys
+	❌FAILED: Cards added to hand do not match top four cards of deck
+	PASSED: For player 1, new card matches top of deck
+	❌FAILED: For player 0, deck has not decreased by exactly four
+	PASSED: For player 1, deck has decreased by exactly one
+	PASSED: Discard pile has not changed for player 0
+	PASSED: Discard pile has not changed for player 1
+Input Case 2: Active player has three cards in deck and non active has zero
+	❌FAILED: For Player 0, expected handcount to increase by 3, but increased by 2
+	PASSED: For Player 1, HandCount increased by 1
+	PASSED: For player 0, original cards in hand unchanged except for council room played
+	PASSED: For player 1, original cards in hand unchanged except for council room played
+	PASSED: For player 0, total card count is the same
+	PASSED: For player 1, total card count is the same
+	PASSED: Council Room card was properly played, i.e. added to playedCard array
+	PASSED: Non-player-related gamestate has not changed except for numBuys
+	❌FAILED: For player 0, expected three cards from hand to match remaining three cards in deck
+	❌FAILED: For player 0, discard count is not 0
+	PASSED: For player 1, discard count is 0
+File 'dominion.c'
+Lines executed:19.80% of 606
+Creating 'dominion.c.gcov'
+
+cardtest3.c:
+TESTING FUNCTION "cardEffect" with card Great Hall
+Input Case 1: Deck has at least one card
+	PASSED: HandCount increased by 0
+	PASSED: Original cards in hand unchanged except for great hall played
+	❌FAILED: Total card count of deck greater than after card effect
+	❌FAILED: Great Hall card was not properly played, i.e. added to playedCard array
+	PASSED: Non-player-related gamestate has not changed except for +2 Actions
+	PASSED: Other player variables have not been affected
+	PASSED: Top card in hand equals top of deck
+	PASSED: Deckcount decreased by 1
+	PASSED: Discard pile has not changed
+Input Case 2: Deck has no cards
+	PASSED: HandCount increased by 0
+	PASSED: Original cards in hand unchanged except for great hall played
+	❌FAILED: Total card count of deck greater than after card effect
+	❌FAILED: Great Hall card was not properly played, i.e. added to playedCard array
+	PASSED: Non-player-related gamestate has not changed except for +2 Actions
+	PASSED: Other player variables have not been affected
+	PASSED: Discard count is 0
+File 'dominion.c'
+Lines executed:20.46% of 606
+Creating 'dominion.c.gcov'
+
+unittest4.c:
+TESTING FUNCTION "VillageEffect"
+Input Case 1: Deck has at least one card
+	PASSED: HandCount increased by 0
+	PASSED: Original cards in hand unchanged except for village played
+	PASSED: Total card count is the same
+	PASSED: Village card was properly played, i.e. added to playedCard array
+	PASSED: Non-player-related gamestate has not changed except for +2 Actions
+	PASSED: Other player variables have not been affected
+	PASSED: Top card in hand equals top of deck
+	PASSED: Deckcount decreased by 1
+	PASSED: Discard pile has not changed
+Input Case 2: Deck has no cards
+	PASSED: HandCount increased by 0
+	PASSED: Original cards in hand unchanged except for village played
+	PASSED: Total card count is the same
+	PASSED: Village card was properly played, i.e. added to playedCard array
+	PASSED: Non-player-related gamestate has not changed except for +2 Actions
+	PASSED: Other player variables have not been affected
+	PASSED: Discard count is 0
+File 'dominion.c'
+Lines executed:19.14% of 606
+Creating 'dominion.c.gcov'
+
+cardtest4.c:
+TESTING FUNCTION "cardEffect" with card Mine
+Input Case 1: Treasure is selected for trashing
+	PASSED: HandCount increased by -1
+	❌FAILED: Total card count of deck greater than after card effect
+	❌FAILED: Mine was not properly played, i.e. added to playedCard array
+	PASSED: Non-player-related gamestate variables have not changed 
+	PASSED: Other player variables have not been affected
+	PASSED: First copper was replaced with silver
+	PASSED: Silver supply pile decreased by 1
+	PASSED: Discard pile remained the same
+Input Case 2: A Non treasure is selected for trashing
+	PASSED: Function returned -1 (not allowed to trash non-treasure)
+Input Case 3: A Non treasure is selected for gaining
+	❌FAILED: Function did not return -1, so it continued unexpectedly
+
+File 'dominion.c'
+Lines executed:22.61% of 606
+Creating 'dominion.c.gcov'
+

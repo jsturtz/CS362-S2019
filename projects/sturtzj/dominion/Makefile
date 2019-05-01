@@ -32,6 +32,18 @@ runtests: testDrawCard
 	gcov dominion.c >> unittestresult.out
 	cat dominion.c.gcov >> unittestresult.out
 
+unittestresults: dominion.o rngs.o unittest1.c unittest2.c unittest3.c unittest4.c cardtest1.c cardtest2.c cardtest3.c cardtest4.c
+	echo "Result for running Dominion tests:" > unittestresults.out
+	for n in 1 2 3 4; do \
+	    echo "unittest$$n.c:" >> unittestresults.out ; \
+	    gcc dominion.c rngs.c unittest$$n.c -o unittest$$n $(CFLAGS) ; \
+	    ./unittest$$n >> unittestresults.out ; \
+	    gcov dominion.c >> unittestresults.out ; \
+	    echo "cardtest$$n.c:" >> unittestresults.out ; \
+	    gcc dominion.c rngs.c cardtest$$n.c -o cardtest$$n $(CFLAGS) ; \
+	    ./cardtest$$n >> unittestresults.out ; \
+	    gcov dominion.c >> unittestresults.out ; \
+	done
 
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)

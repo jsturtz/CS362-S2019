@@ -538,7 +538,7 @@ int drawCard(int player, struct gameState *state)
     state->deckCount[player] = state->discardCount[player];
     state->discardCount[player] = 0;//Reset discard
 
-    //Shufffle the deck
+    //Shuffle the deck
     shuffle(player, state);//Shuffle the deck up and make it so that we can draw
    
     if (DEBUG){//Debug statements
@@ -643,8 +643,7 @@ int getCost(int cardNumber)
   return -1;
 }
 
-
-int adventurerEffect(struct gameState *state, int currentPlayer) {
+int adventurerEffect(struct gameState *state, int currentPlayer, int handPos) {
   
   int temphand[MAX_HAND];
   int drawntreasure=0;
@@ -655,7 +654,7 @@ int adventurerEffect(struct gameState *state, int currentPlayer) {
     if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
       shuffle(currentPlayer, state);
     }
-    drawCard(currentPlayer, state);
+    drawCard(currentPlayer, state); 
     cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
     if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
       drawntreasure++;
@@ -670,6 +669,8 @@ int adventurerEffect(struct gameState *state, int currentPlayer) {
     state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
     z=z-1;
   }
+  // This code was not in original cardEffect code, which is likely bug
+  /* discardCard(handPos, currentPlayer, state, 0); */
   return 0;
 }
 
@@ -682,7 +683,7 @@ int smithyEffect(struct gameState *state, int currentPlayer, int handPos) {
       drawCard(currentPlayer, state);
     }
                     
-  //+1 Buy
+  //BUG HERE - +1 Buy
   state->numBuys++;
 
   //discard card from hand
@@ -693,7 +694,7 @@ int smithyEffect(struct gameState *state, int currentPlayer, int handPos) {
 int councilRoomEffect(struct gameState *state, int currentPlayer, int handPos) {
 
   int i;
-  //+4 Cards
+  // BUG HERE: Actually draws only three
   for (i = 0; i < 3; i++)
     {
       drawCard(currentPlayer, state);
@@ -735,7 +736,7 @@ int greatHallEffect(struct gameState *state, int currentPlayer, int handPos) {
   //+1 Actions
   state->numActions++;
                     
-  //discard card from hand
+  // BUG HERE - Trashflag is set
   discardCard(handPos, currentPlayer, state, 1);
   return 0;
 }
@@ -752,19 +753,15 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
   int tributeRevealedCards[2] = {-1, -1};
   int temphand[MAX_HAND];// moved above the if statement
-  int drawntreasure=0;
-  int cardDrawn;
-  int z = 0;// this is the counter for the temp hand
   if (nextPlayer > (state->numPlayers - 1)){
     nextPlayer = 0;
   }
-  
 
   //uses switch to select card and perform actions
   switch( card ) 
     {
     case adventurer:
-      return adventurerEffect(state, currentPlayer);
+      return adventurerEffect(state, currentPlayer, handPos);
 			
     case council_room:
       return councilRoomEffect(state, currentPlayer, handPos);

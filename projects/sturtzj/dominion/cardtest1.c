@@ -8,8 +8,8 @@
 
 /*-------------------------------------------------------------------------------------------------
 INPUT PARTITION 
-Input case 1: Top two deck cards are treasures
-Input case 2: There exist non-treasures before the two treasures
+Input case 3: There is only one treasure in the deck, the second is found after shuffling
+Input case 4: There are no treasures in deck, both are found after shuffling
 
 STANDARD TESTS (run same way for all inputs)
 TEST 1: Adventurer card should be "played" i.e. added to playedCard variable
@@ -21,8 +21,7 @@ TEST 6: Gamestate has not changed for any non-player related variables
 TEST 7: Gamestate has not changed for any other player
 
 INPUT DEPENDENT TESTS
-TEST 8: If top two cards are treasures, discard piles should be identical 
-TEST 9: If two treasures in deck, player draws cards until and only until second treasure is found in deck
+TEST 8: If deck must be shuffled to access 2nd treasure, discard pile should not have any treasures
 -------------------------------------------------------------------------------------------------*/
 
 // will check that adventurer was played, i.e. that it is appended to testG.playedCards
@@ -224,101 +223,98 @@ int runTests(int player, int handpos, struct gameState* G, struct gameState* tes
   return 0;
 }
 
-// tests whether player drew X cards
-// NOTE: only useful when deck has not been shuffled across draws
-int drawnX(int player, int X, struct gameState* G, struct gameState* testG) {
-
-  if (G->deckCount[player] += testG->deckCount[player] + X)
-    printf("\tPASSED: Player drew until and only until second treasure was found\n");
-  else if (G->deckCount[player] > testG->deckCount[player] + X)
-    printf("\t\u274CFAILED: Player drew more cards than needed to reveal two treasures\n");
-  else
-    printf("\t\u274CFAILED: Player did not draw sufficient cards to reveal two treasures\n");
-  return 0;
-}
-
 int main() {
   
+  int nextCard;                         // used for tracking cards through loops
   int pass;                             // used as bool for whether test has passed
   int seed = 1000;                      // seed for initializeGame
   int numPlayers = 4;                   // numPlayers
-  int player = 0;                       // all tests will be performed on first player
+  int player;                           // the player who will use the card
   int handpos;                          // used to indicate handposition of adventurer
+  int coin_bonus = 0;
   struct gameState G, testG, blankG;    // blankG = at first initialization, G = before function, testG = after function
 
 
   // initialize a game state and player cards
   int k[10] = {adventurer, embargo, village, minion, mine, cutpurse, sea_hag, tribute, smithy, council_room};
   initializeGame(numPlayers, k, seed, &G);
+  player = whoseTurn(&G);
   memcpy(&blankG, &G, sizeof(struct gameState));
   
-  printf("TESTING FUNCTION \"AdventurerEffect\"\n");
+  printf("TESTING FUNCTION \"cardEffect\" for Adventurer card\n");
 
-  // Input case 1: Top two deck cards are treasures
-  printf("Input Case 1: When the top two cards are treasures\n");
-  G.deck[player][G.deckCount[player]] = gold;
-  G.deckCount[player]++;
-  G.deck[player][G.deckCount[player]] = silver;
-  G.deckCount[player]++;
+  // Input case 3: There is only one treasure in deck, so second treasure found after shuffling
+  printf("Input Case 3: There is only one treasure in deck, so second treasure must be found after shuffling discard\n");
   
-  handpos = G.handCount[player];                        // add adventurer to hand 
+  // manually set deck so only one treasure
+  G.deckCount[player] = 4;                                              
+  G.deck[player][0] = G.deck[player][1] = G.deck[player][2] = estate;
+  G.deck[player][3] = copper;
+
+  // add at least one copper to discard so guaranteed to pull second treasure
+  G.discard[player][G.discardCount[player]] = copper;
+  G.discardCount[player]++;
+
+  // add adventurer to hand 
+  handpos = G.handCount[player];                                        
   G.hand[player][handpos] = adventurer;     
   G.handCount[player]++;                                
   
-  memcpy(&testG, &G, sizeof(struct gameState));         // copy state into testG
-  adventurerEffect(&testG, player, handpos);            // call adventurerEffect
-  runTests(player, handpos, &G, &testG);                // runs same tests for all inputs
-  
-  // TEST: Player draws cards until and only until second treasure is found in deck
-  drawnX(player, 2, &G, &testG);
+  // call function to compare results
+  memcpy(&testG, &G, sizeof(struct gameState    ));
+  cardEffect(adventurer, 0, 0, 0, &testG, handpos, &coin_bonus); // the 0s are booleans for choice 0, 1, & 2, not relevant for adventurer
 
-  // TEST: Have identical discard piles
-  if (G.discardCount[player] == testG.discardCount[player]) {
-    pass = 1;
-    for (int i = 0; i < G.discardCount[player]; i++) {
-      if (G.discard[player][i] != testG.discard[player][i]) {
-        pass = 0;
-        break;
-      }
+  // runs same tests for all inputs
+  runTests(player, handpos, &G, &testG);                         
+
+  // TEST: Player discard pile has no treasures
+  pass = 1;
+  for (int i = 0; i < testG.discardCount[player]; i++) {
+    nextCard = testG.discard[player][i];
+    if ((nextCard >= copper && nextCard <= gold)) {
+      pass = 0; 
+      break;
     }
-    if (pass) {
-      printf("\tPASSED: Discard Piles are identical\n");
-    } else printf("\t\u274CFAILED: Discard piles are not identical\n");
-  } else printf("\t\u274CFAILED: Discard piles are not identical\n");
+  }
+  if (pass) printf("\tPASSED: Player discard pile has no treasures\n");
+  else printf("\t\u274CFAILED: Player discard pile has treasures\n");
+
+  // Input case 4: There are no treasures in deck, so second treasure found after shuffling
+  printf("Input Case 4: There are no treasures in deck, so second treasure must be found after shuffling discard\n");
+
+  // reset gamestates
+  memcpy(&G, &blankG, sizeof(struct gameState));
   
-  // Input case 2: First two cards are not both treasures but at least two treasures in deck
-  printf("Input Case 2: There are non-treasures before the two treasures, but there are at least two treasures in deck\n");
+  // put no treasures in deck
+  G.deckCount[player] = 3;
+  G.deck[player][0] = G.deck[player][1] = G.deck[player][2] = estate;
 
-  memcpy(&G, &blankG, sizeof(struct gameState));        // reset gamestates
-                                                         
-  G.deck[player][G.deckCount[player]] = gold;           // add non-treasures and two treasures to deck
-  G.deck[player][G.deckCount[player]+1] = province;
-  G.deck[player][G.deckCount[player]+2] = silver;
-  G.deck[player][G.deckCount[player]+3] = duchy;
-  G.deckCount[player] = G.deckCount[player] + 4;
+  // add treasures to discard to ensure enough treasures in discard pile
+  G.discard[player][G.discardCount[player]] = copper;
+  G.discard[player][G.discardCount[player]+1] = copper;
+  G.discardCount[player] = G.discardCount[player] + 2;
 
-  handpos = G.handCount[player];                        // add adventurer to hand 
+  // add adventurer to hand 
+  handpos = G.handCount[player];                                        
   G.hand[player][handpos] = adventurer;     
   G.handCount[player]++;                                
   
-  memcpy(&testG, &G, sizeof(struct gameState));         
-  adventurerEffect(&testG, player, handpos);                     
+  memcpy(&testG, &G, sizeof(struct gameState));
+  cardEffect(adventurer, 0, 0, 0, &testG, handpos, &coin_bonus); // the 0s are booleans for choice 0, 1, & 2, not relevant for adventurer
 
-  runTests(player, handpos, &G, &testG);                // runs same tests for all inputs
+  // runs same tests for all inputs
+  runTests(player, handpos, &G, &testG);                         
 
-  // TEST: Player draws cards until fourth card in deck
-  drawnX(player, 4, &G, &testG);
-  
-  // TEST: All discard count should be equal to non-treasures in deck that exist before 2nd treasure
-  if (testG.discardCount[player] == G.discardCount[player] + 2) {
-    int first = testG.discard[player][testG.discardCount[player] - 1];
-    int second = testG.discard[player][testG.discardCount[player] - 2];
-
-    if ((first == duchy) && (second == province))
-      printf("\tPASSED: Discarded cards match non-treasures drawn from deck\n");
-    else
-      printf("\t\u274CFAILED: Discarded cards do not match non-treasures drawn from deck\n");
+  // TEST: Player discard pile has no treasures
+  pass = 1;
+  for (int i = 0; i < testG.discardCount[player]; i++) {
+    nextCard = testG.discard[player][i];
+    if ((nextCard >= copper && nextCard <= gold)) {
+      pass = 0; 
+      break;
+    }
   }
-  else printf("\t\u274CFAILED: Discard should have increased by 2, but instead increased by %d\n", testG.discardCount[player] - G.discardCount[player]);
+  if (pass) printf("\tPASSED: Player discard pile has no treasures\n");
+  else printf("\t\u274CFAILED: Player discard pile has treasures\n");
   printf("\n");
 }
