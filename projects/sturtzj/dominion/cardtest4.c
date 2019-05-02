@@ -171,6 +171,148 @@ int testGameState(struct gameState* G, struct gameState* testG) {
   return 0;
 }
 
+/* struct gameState { */
+/*   int numPlayers; //number of players */
+/*   int supplyCount[treasure_map+1];  //this is the amount of a specific type of card given a specific number. */
+/*   int embargoTokens[treasure_map+1]; */
+/*   int outpostPlayed; */
+/*   int outpostTurn; */
+/*   int whoseTurn; */
+/*   int phase; */
+/*   int numActions; /1* Starts at 1 each turn *1/ */
+/*   int coins; /1* Use as you see fit! *1/ */
+/*   int numBuys; /1* Starts at 1 each turn *1/ */
+/*   int hand[MAX_PLAYERS][MAX_HAND]; */
+/*   int handCount[MAX_PLAYERS]; */
+/*   int deck[MAX_PLAYERS][MAX_DECK]; */
+/*   int deckCount[MAX_PLAYERS]; */
+/*   int discard[MAX_PLAYERS][MAX_DECK]; */
+/*   int discardCount[MAX_PLAYERS]; */
+/*   int playedCards[MAX_DECK]; */
+/*   int playedCardCount; */
+/* }; */
+
+// Checks that nothing has changed at all in both gameStates
+int testTotalGameState(struct gameState* G, struct gameState* testG) {
+
+  int partial_pass;
+  int total_pass = 1;
+  if (G->numPlayers != testG->numPlayers) {
+    printf("\t\u274CFAILED: Gamestate altered (numPlayers)\n");
+    total_pass = 0;
+  }
+  
+  partial_pass = 1;
+  for (int i = 0; i < treasure_map+1; i++) {
+    if (G->supplyCount[i] != testG->supplyCount[i]) {
+      partial_pass = 0;
+      total_pass = 0;
+    }
+  }
+  if (!partial_pass) printf("\t\u274CFAILED: Gamestate altered(supply piles)\n");
+
+  partial_pass = 1;
+  for (int i = 0; i < treasure_map+1; i++) {
+    if (G->embargoTokens[i] != testG->embargoTokens[i]) {
+      partial_pass = 0;
+      total_pass = 0;
+    }
+  }
+  if (!partial_pass) printf("\t\u274CFAILED: Gamestate altered (embargo tokens)\n");
+  
+  if (G->outpostPlayed != testG->outpostPlayed) {
+    printf("\t\u274CFAILED: Gamestate altered(outpostPlayed)\n");
+    total_pass = 0;
+  }
+
+  if (G->outpostTurn != testG->outpostTurn) {
+    printf("\t\u274CFAILED: Gamestate altered(outpostTurn)\n");
+    total_pass = 0;
+  }
+
+  if (G->whoseTurn != testG->whoseTurn) {
+    printf("\t\u274CFAILED: Gamestate altered(whoseTurn)\n");
+    total_pass = 0;
+  }
+
+  if (G->phase != testG->phase) {
+    printf("\t\u274CFAILED: Gamestate altered(phase)\n");
+    total_pass = 0;
+  }
+
+  if (G->numActions != testG->numActions) {
+    printf("\t\u274CFAILED: Gamestate altered(numActions)\n");
+    total_pass = 0;
+  }
+
+  if (G->coins != testG->coins) {
+    printf("\t\u274CFAILED: Gamestate altered(coins)\n");
+    total_pass = 0;
+  }
+
+  if (G->numBuys != testG->numBuys) {
+    printf("\t\u274CFAILED: Gamestate altered(numBuys)\n");
+    total_pass = 0;
+  }
+
+  // testing gamestate for players
+  for (int p = 0; p < G->numPlayers; p++) {
+    // Decks are identical
+    if (G->deckCount[p] == testG->deckCount[p]) {
+      partial_pass = 1;
+      for (int i = 0; i < G->deckCount[p]; i++) {
+        if (G->deck[p][i] != testG->deck[p][i]) {
+          partial_pass = 0;
+        }
+      }
+      if (!partial_pass) printf("\t\u274CFAILED: Player %d does not have identical deck after card effect\n", p);
+    } 
+    else printf("\t\u274CFAILED: Player %d does not have identical deck after card effect\n", p);
+
+    // Hands are identical
+    if (G->handCount[p] == testG->handCount[p]) {
+      partial_pass = 1;
+
+      for (int i = 0; i < G->handCount[p]; i++) {
+        if (G->hand[p][i] != testG->hand[p][i]) {
+          partial_pass = 0;
+        }
+      }
+      if (!partial_pass) printf("\t\u274CFAILED: Player %d hand has changed after card effect\n", p);
+    } 
+    else printf("\t\u274CFAILED: Player %d hand has changed after card effect\n", p);
+
+    // Discards are identical
+    if (G->discardCount[p] == testG->discardCount[p]) {
+      
+      partial_pass = 1;
+      for (int i = 0; i < G->discardCount[p]; i++) {
+        if (G->discard[p][i] != testG->discard[p][i]) {
+          partial_pass = 0;
+        }
+      }
+      if (!partial_pass) printf("\t\u274CFAILED: Player %d discard has changed\n", p);
+    }
+    else printf("\t\u274CFAILED: Player %d discardCount has changed\n", p);
+  }
+
+
+  for (int i = 0; i < G->playedCardCount; i++) {
+    if (G->playedCards[i] != testG->playedCards[i]) {
+      printf("\t\u274CFAILED: Gamestate altered(played cards)\n");
+      total_pass = 0;
+    }
+  }
+
+  if (G->playedCardCount != testG->playedCardCount) {
+    printf("\t\u274CFAILED: Gamestate altered(playedCardCount)\n");
+    total_pass = 0;
+  }
+  
+  if (total_pass) printf("\tPASSED: Gamestates are identical\n");
+  return 0;
+}
+
 int testOtherPlayers(int player, struct gameState* G, struct gameState* testG) {
   
   int partial_pass;
@@ -308,6 +450,9 @@ int main() {
     printf("\tPASSED: Function returned -1 (not allowed to trash non-treasure)\n");
   else printf("\t\u274CFAILED: Function did not return -1, so it continued unexpectedly\n");
 
+  // TEST: Gamestate should not have changed
+  testTotalGameState(&G, &testG);
+
   // Input case 3: A non-treasure is selected for gaining
   printf("Input Case 3: A Non treasure is selected for gaining\n");
   
@@ -325,5 +470,9 @@ int main() {
   if (result == -1)
     printf("\tPASSED: Function returned -1 (not allowed to gain non-treasure)\n");
   else printf("\t\u274CFAILED: Function did not return -1, so it continued unexpectedly\n");
+
+  // TEST: Gamestate should not have changed
+  testTotalGameState(&G, &testG);
+
   printf("\n");
 }

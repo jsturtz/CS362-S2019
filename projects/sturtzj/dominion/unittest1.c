@@ -248,8 +248,7 @@ int main() {
 
 
   // initialize a game state and player cards
-  int k[10] = {adventurer, embargo, village, minion, mine, cutpurse, sea_hag, tribute, smithy, council_room};
-  initializeGame(numPlayers, k, seed, &G);
+  int k[10] = {adventurer, embargo, village, minion, mine, cutpurse, sea_hag, tribute, smithy, council_room}; initializeGame(numPlayers, k, seed, &G);
   memcpy(&blankG, &G, sizeof(struct gameState));
   
   printf("TESTING FUNCTION \"AdventurerEffect\"\n");
