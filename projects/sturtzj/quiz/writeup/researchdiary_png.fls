@@ -1,0 +1,7 @@
+PWD /home/jordan/Documents/OSUFiles/spring2019/para/week1/writeup
+INPUT /etc/texmf/web2c/texmf.cnf
+INPUT /usr/share/texmf/web2c/texmf.cnf
+INPUT /usr/share/texlive/texmf-dist/web2c/texmf.cnf
+INPUT /var/lib/texmf/web2c/pdftex/pdflatex.fmt
+INPUT researchdiary_png.sty
+OUTPUT researchdiary_png.log
