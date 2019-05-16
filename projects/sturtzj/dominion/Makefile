@@ -1,4 +1,5 @@
 CFLAGS= -Wall -fpic -coverage -lm -std=c99
+NUMTRIES=10 
 
 rngs.o: rngs.h rngs.c
 	gcc -c rngs.c -g  $(CFLAGS)
@@ -32,6 +33,22 @@ runtests: testDrawCard
 	gcov dominion.c >> unittestresult.out
 	cat dominion.c.gcov >> unittestresult.out
 
+randomtestresults: dominion.o rngs.o randomtestadventurer.c randomtestcard1.c randomtestcard2.c
+	echo "OUTPUT FOR RUNNING TESTS $(NUMTRIES)times:" > randomtestresults.out
+	echo "randomtestcard1.c:" >> randomtestresults.out
+	gcc dominion.c rngs.c randomtestcard1.c -o randomtestcard1 $(CFLAGS) -DNUMTRIES=$(NUMTRIES)
+	./randomtestcard1 >> randomtestresults.out 
+	gcov dominion.c >> randomtestresults.out
+	echo "randomtestcard2.c:" >> randomtestresults.out
+	gcc dominion.c rngs.c randomtestcard2.c -o randomtestcard2 $(CFLAGS) -DNUMTRIES=$(NUMTRIES)
+	./randomtestcard2 >> randomtestresults.out
+	gcov dominion.c >> randomtestresults.out
+	echo "randomtestadventurer.c:" >> randomtestresults.out
+	gcc dominion.c rngs.c randomtestadventurer.c -o randomtestadventurer $(CFLAGS) -DNUMTRIES=$(NUMTRIES)
+	./randomtestadventurer >> randomtestresults.out
+	gcov dominion.c >> randomtestresults.out
+	echo "FUNCTION AND BRANCH COVERAGE OVERALL" >> randomtestresults.out
+	gcov dominion.c -bf >> randomtestresults.out
 
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)

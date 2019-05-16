@@ -1,0 +1,252 @@
+OUTPUT FOR RUNNING TESTS 10 times:
+randomtestcard1.c:
+Assert failed: (G.numBuys == testG.numBuys), line 150.
+Assert failed: (G.numBuys == testG.numBuys), line 150.
+Assert failed: (G.numBuys == testG.numBuys), line 150.
+Assert failed: (G.numBuys == testG.numBuys), line 150.
+Assert failed: (G.numBuys == testG.numBuys), line 150.
+Assert failed: (G.numBuys == testG.numBuys), line 150.
+Assert failed: (G.numBuys == testG.numBuys), line 150.
+Assert failed: (G.numBuys == testG.numBuys), line 150.
+Assert failed: (G.numBuys == testG.numBuys), line 150.
+Assert failed: (G.numBuys == testG.numBuys), line 150.
+Minutes elapsed:     0.00
+File 'dominion.c'
+Lines executed:27.67% of 647
+dominion.c:creating 'dominion.c.gcov'
+
+randomtestcard2.c:
+Assert failed: (testG.handCount[player] == G.handCount[player] + 3), line 129.
+Assert failed: (isSameSet(topDeck, topHand, numSet, isGreaterThan)), line 182.
+Assert failed: (testG.handCount[player] == G.handCount[player] + 3), line 129.
+Assert failed: (isSameSet(topDeck, topHand, numSet, isGreaterThan)), line 182.
+Assert failed: (testG.handCount[player] == G.handCount[player] + 3), line 129.
+Assert failed: (isSameSet(topDeck, topHand, numSet, isGreaterThan)), line 182.
+Assert failed: (testG.handCount[player] == G.handCount[player] + 3), line 129.
+Assert failed: (isSameSet(topDeck, topHand, numSet, isGreaterThan)), line 182.
+Assert failed: (testG.handCount[player] == G.handCount[player] + 3), line 129.
+Assert failed: (isSameSet(topDeck, topHand, numSet, isGreaterThan)), line 182.
+Assert failed: (testG.handCount[player] == G.handCount[player] + 3), line 129.
+Assert failed: (isSameSet(topDeck, topHand, numSet, isGreaterThan)), line 182.
+Assert failed: (testG.handCount[player] == G.handCount[player] + 3), line 129.
+Assert failed: (isSameSet(topDeck, topHand, numSet, isGreaterThan)), line 182.
+Assert failed: (testG.handCount[player] == G.handCount[player] + 3), line 129.
+Assert failed: (isSameSet(topDeck, topHand, numSet, isGreaterThan)), line 182.
+Assert failed: (testG.handCount[player] == G.handCount[player] + 3), line 129.
+Assert failed: (isSameSet(topDeck, topHand, numSet, isGreaterThan)), line 182.
+Assert failed: (testG.handCount[player] == G.handCount[player] + 3), line 129.
+Assert failed: (isSameSet(topDeck, topHand, numSet, isGreaterThan)), line 182.
+Minutes elapsed:     0.00
+File 'dominion.c'
+Lines executed:27.67% of 647
+dominion.c:creating 'dominion.c.gcov'
+
+randomtestadventurer.c:
+Assert failed: (testG.playedCardCount == G.playedCardCount + 1), line 116.
+Assert failed: (testG.playedCards[testG.playedCardCount-1] == adventurer), line 117.
+Assert failed: (testG.handCount[player] == G.handCount[player] + 1), line 118.
+Assert failed: (G.handCount[player] + G.discardCount[player] + G.deckCount[player] + G.playedCardCount == testG.handCount[player] + testG.discardCount[player] + testG.deckCount[player] + testG.playedCardCount), line 127.
+Assert failed: (testG.playedCardCount == G.playedCardCount + 1), line 116.
+Assert failed: (testG.playedCards[testG.playedCardCount-1] == adventurer), line 117.
+Assert failed: (testG.handCount[player] == G.handCount[player] + 1), line 118.
+Assert failed: (G.handCount[player] + G.discardCount[player] + G.deckCount[player] + G.playedCardCount == testG.handCount[player] + testG.discardCount[player] + testG.deckCount[player] + testG.playedCardCount), line 127.
+Assert failed: (memcmp(G.hand[j], testG.hand[j], sizeof(int) * (G.handCount[j] - 1)) == 0), line 144.
+Assert failed: (testG.playedCardCount == G.playedCardCount + 1), line 116.
+Assert failed: (testG.playedCards[testG.playedCardCount-1] == adventurer), line 117.
+Assert failed: (testG.handCount[player] == G.handCount[player] + 1), line 118.
+Assert failed: (G.handCount[player] + G.discardCount[player] + G.deckCount[player] + G.playedCardCount == testG.handCount[player] + testG.discardCount[player] + testG.deckCount[player] + testG.playedCardCount), line 127.
+Assert failed: (testG.playedCardCount == G.playedCardCount + 1), line 116.
+Assert failed: (testG.playedCards[testG.playedCardCount-1] == adventurer), line 117.
+Assert failed: (testG.handCount[player] == G.handCount[player] + 1), line 118.
+Assert failed: (G.handCount[player] + G.discardCount[player] + G.deckCount[player] + G.playedCardCount == testG.handCount[player] + testG.discardCount[player] + testG.deckCount[player] + testG.playedCardCount), line 127.
+Assert failed: (testG.playedCardCount == G.playedCardCount + 1), line 116.
+Assert failed: (testG.playedCards[testG.playedCardCount-1] == adventurer), line 117.
+Assert failed: (testG.handCount[player] == G.handCount[player] + 1), line 118.
+Assert failed: (G.handCount[player] + G.discardCount[player] + G.deckCount[player] + G.playedCardCount == testG.handCount[player] + testG.discardCount[player] + testG.deckCount[player] + testG.playedCardCount), line 127.
+Assert failed: (testG.playedCardCount == G.playedCardCount + 1), line 116.
+Assert failed: (testG.playedCards[testG.playedCardCount-1] == adventurer), line 117.
+Assert failed: (testG.handCount[player] == G.handCount[player] + 1), line 118.
+Assert failed: (G.handCount[player] + G.discardCount[player] + G.deckCount[player] + G.playedCardCount == testG.handCount[player] + testG.discardCount[player] + testG.deckCount[player] + testG.playedCardCount), line 127.
+Assert failed: (testG.playedCardCount == G.playedCardCount + 1), line 116.
+Assert failed: (testG.playedCards[testG.playedCardCount-1] == adventurer), line 117.
+Assert failed: (testG.handCount[player] == G.handCount[player] + 1), line 118.
+Assert failed: (G.handCount[player] + G.discardCount[player] + G.deckCount[player] + G.playedCardCount == testG.handCount[player] + testG.discardCount[player] + testG.deckCount[player] + testG.playedCardCount), line 127.
+Assert failed: (memcmp(G.discard[j], testG.discard[j], sizeof(int) * (G.discardCount[j] - 1)) == 0), line 145.
+Assert failed: (testG.playedCardCount == G.playedCardCount + 1), line 116.
+Assert failed: (testG.playedCards[testG.playedCardCount-1] == adventurer), line 117.
+Assert failed: (testG.handCount[player] == G.handCount[player] + 1), line 118.
+Assert failed: (G.handCount[player] + G.discardCount[player] + G.deckCount[player] + G.playedCardCount == testG.handCount[player] + testG.discardCount[player] + testG.deckCount[player] + testG.playedCardCount), line 127.
+Assert failed: (testG.playedCardCount == G.playedCardCount + 1), line 116.
+Assert failed: (testG.playedCards[testG.playedCardCount-1] == adventurer), line 117.
+Assert failed: (testG.handCount[player] == G.handCount[player] + 1), line 118.
+Assert failed: (G.handCount[player] + G.discardCount[player] + G.deckCount[player] + G.playedCardCount == testG.handCount[player] + testG.discardCount[player] + testG.deckCount[player] + testG.playedCardCount), line 127.
+Assert failed: (testG.playedCardCount == G.playedCardCount + 1), line 116.
+Assert failed: (testG.handCount[player] == G.handCount[player] + 1), line 118.
+Assert failed: (G.handCount[player] + G.discardCount[player] + G.deckCount[player] + G.playedCardCount == testG.handCount[player] + testG.discardCount[player] + testG.deckCount[player] + testG.playedCardCount), line 127.
+Minutes elapsed:     0.00
+File 'dominion.c'
+Lines executed:27.67% of 647
+dominion.c:creating 'dominion.c.gcov'
+
+FUNCTION AND BRANCH COVERAGE OVERALL
+Function 'compare'
+Lines executed:100.00% of 6
+Branches executed:100.00% of 4
+Taken at least once:100.00% of 4
+No calls
+
+Function 'newGame'
+Lines executed:0.00% of 2
+No branches
+No calls
+
+Function 'kingdomCards'
+Lines executed:0.00% of 12
+No branches
+No calls
+
+Function 'initializeGame'
+Lines executed:97.44% of 78
+Branches executed:100.00% of 46
+Taken at least once:93.48% of 46
+No calls
+
+Function 'shuffle'
+Lines executed:100.00% of 18
+Branches executed:100.00% of 8
+Taken at least once:100.00% of 8
+No calls
+
+Function 'playCard'
+Lines executed:0.00% of 14
+Branches executed:0.00% of 10
+Taken at least once:0.00% of 10
+No calls
+
+Function 'buyCard'
+Lines executed:0.00% of 13
+Branches executed:0.00% of 6
+Taken at least once:0.00% of 6
+No calls
+
+Function 'numHandCards'
+Lines executed:0.00% of 1
+No branches
+No calls
+
+Function 'handCard'
+Lines executed:0.00% of 2
+No branches
+No calls
+
+Function 'supplyCount'
+Lines executed:0.00% of 1
+No branches
+No calls
+
+Function 'fullDeckCount'
+Lines executed:0.00% of 11
+Branches executed:0.00% of 12
+Taken at least once:0.00% of 12
+No calls
+
+Function 'whoseTurn'
+Lines executed:0.00% of 1
+No branches
+No calls
+
+Function 'endTurn'
+Lines executed:0.00% of 22
+Branches executed:0.00% of 6
+Taken at least once:0.00% of 6
+No calls
+
+Function 'isGameOver'
+Lines executed:0.00% of 12
+Branches executed:0.00% of 8
+Taken at least once:0.00% of 8
+No calls
+
+Function 'scoreFor'
+Lines executed:0.00% of 26
+Branches executed:0.00% of 42
+Taken at least once:0.00% of 42
+No calls
+
+Function 'getWinners'
+Lines executed:0.00% of 33
+Branches executed:0.00% of 22
+Taken at least once:0.00% of 22
+No calls
+
+Function 'drawCard'
+Lines executed:100.00% of 24
+Branches executed:100.00% of 6
+Taken at least once:100.00% of 6
+No calls
+
+Function 'getCost'
+Lines executed:0.00% of 30
+Branches executed:0.00% of 28
+Taken at least once:0.00% of 28
+No calls
+
+Function 'adventurerEffect'
+Lines executed:100.00% of 17
+Branches executed:100.00% of 12
+Taken at least once:100.00% of 12
+No calls
+
+Function 'smithyEffect'
+Lines executed:100.00% of 6
+Branches executed:100.00% of 2
+Taken at least once:100.00% of 2
+No calls
+
+Function 'councilRoomEffect'
+Lines executed:100.00% of 11
+Branches executed:100.00% of 6
+Taken at least once:100.00% of 6
+No calls
+
+Function 'villageEffect'
+Lines executed:0.00% of 4
+No branches
+No calls
+
+Function 'greatHallEffect'
+Lines executed:0.00% of 4
+No branches
+No calls
+
+Function 'cardEffect'
+Lines executed:0.00% of 255
+Branches executed:0.00% of 179
+Taken at least once:0.00% of 179
+No calls
+
+Function 'discardCard'
+Lines executed:73.33% of 15
+Branches executed:100.00% of 6
+Taken at least once:50.00% of 6
+No calls
+
+Function 'gainCard'
+Lines executed:0.00% of 15
+Branches executed:0.00% of 6
+Taken at least once:0.00% of 6
+No calls
+
+Function 'updateCoins'
+Lines executed:71.43% of 14
+Branches executed:100.00% of 8
+Taken at least once:75.00% of 8
+No calls
+
+File 'dominion.c'
+Lines executed:27.67% of 647
+Branches executed:23.50% of 417
+Taken at least once:21.58% of 417
+No calls
+dominion.c:creating 'dominion.c.gcov'
+

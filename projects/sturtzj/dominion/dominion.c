@@ -199,7 +199,6 @@ int initializeGame(int numPlayers, int kingdomCards[10], int randomSeed,
 }
 
 int shuffle(int player, struct gameState *state) {
- 
 
   int newDeck[MAX_DECK];
   int newDeckPos = 0;
@@ -644,7 +643,7 @@ int getCost(int cardNumber)
 }
 
 
-int adventurerEffect(struct gameState *state, int currentPlayer) {
+int adventurerEffect(struct gameState *state, int currentPlayer, int handpos) {
   
   int temphand[MAX_HAND];
   int drawntreasure=0;
@@ -670,6 +669,7 @@ int adventurerEffect(struct gameState *state, int currentPlayer) {
     state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
     z=z-1;
   }
+
   return 0;
 }
 
@@ -764,7 +764,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
   switch( card ) 
     {
     case adventurer:
-      return adventurerEffect(state, currentPlayer);
+      return adventurerEffect(state, currentPlayer, handPos);
 			
     case council_room:
       return councilRoomEffect(state, currentPlayer, handPos);
