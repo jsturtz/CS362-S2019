@@ -199,7 +199,6 @@ int initializeGame(int numPlayers, int kingdomCards[10], int randomSeed,
 }
 
 int shuffle(int player, struct gameState *state) {
- 
 
   int newDeck[MAX_DECK];
   int newDeckPos = 0;
@@ -538,7 +537,7 @@ int drawCard(int player, struct gameState *state)
     state->deckCount[player] = state->discardCount[player];
     state->discardCount[player] = 0;//Reset discard
 
-    //Shuffle the deck
+    //Shufffle the deck
     shuffle(player, state);//Shuffle the deck up and make it so that we can draw
    
     if (DEBUG){//Debug statements
@@ -643,7 +642,8 @@ int getCost(int cardNumber)
   return -1;
 }
 
-int adventurerEffect(struct gameState *state, int currentPlayer, int handPos) {
+
+int adventurerEffect(struct gameState *state, int currentPlayer, int handpos) {
   
   int temphand[MAX_HAND];
   int drawntreasure=0;
@@ -654,7 +654,7 @@ int adventurerEffect(struct gameState *state, int currentPlayer, int handPos) {
     if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
       shuffle(currentPlayer, state);
     }
-    drawCard(currentPlayer, state); 
+    drawCard(currentPlayer, state);
     cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
     if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
       drawntreasure++;
@@ -669,8 +669,7 @@ int adventurerEffect(struct gameState *state, int currentPlayer, int handPos) {
     state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
     z=z-1;
   }
-  // This code was not in original cardEffect code, which is likely bug
-  /* discardCard(handPos, currentPlayer, state, 0); */
+
   return 0;
 }
 
@@ -683,7 +682,7 @@ int smithyEffect(struct gameState *state, int currentPlayer, int handPos) {
       drawCard(currentPlayer, state);
     }
                     
-  //BUG HERE - +1 Buy
+  //+1 Buy
   state->numBuys++;
 
   //discard card from hand
@@ -694,7 +693,7 @@ int smithyEffect(struct gameState *state, int currentPlayer, int handPos) {
 int councilRoomEffect(struct gameState *state, int currentPlayer, int handPos) {
 
   int i;
-  // BUG HERE: Actually draws only three
+  //+4 Cards
   for (i = 0; i < 3; i++)
     {
       drawCard(currentPlayer, state);
@@ -729,43 +728,6 @@ int villageEffect(struct gameState *state, int currentPlayer, int handPos) {
   return 0;
 }
 
-int mineEffect(struct gameState *state, int currentPlayer, int handPos, int choice1, int choice2) {
-  int j = state->hand[currentPlayer][choice1];  //store card we will trash
-
-  if (state->hand[currentPlayer][choice1] < copper || state->hand[currentPlayer][choice1] > gold)
-    {
-      return -1;
-    }
-            
-  if (choice2 > treasure_map || choice2 < curse)
-    {
-      return -1;
-    }
-
-  if ( (getCost(state->hand[currentPlayer][choice1]) + 3) > getCost(choice2) )
-    {
-      return -1;
-    }
-
-  gainCard(choice2, state, 2, currentPlayer);
-
-  //discard card from hand
-  discardCard(handPos, currentPlayer, state, 0);
-
-  //discard trashed card
-  for (int i = 0; i < state->handCount[currentPlayer]; i++)
-    {
-      if (state->hand[currentPlayer][i] == j)
-        {
-          discardCard(i, currentPlayer, state, 0);			
-          break;
-        }
-    }
-                    
-  return 0;
-
-}
-
 int greatHallEffect(struct gameState *state, int currentPlayer, int handPos) {
   //+1 Card
   drawCard(currentPlayer, state);
@@ -773,7 +735,7 @@ int greatHallEffect(struct gameState *state, int currentPlayer, int handPos) {
   //+1 Actions
   state->numActions++;
                     
-  // BUG HERE - Trashflag is set
+  //discard card from hand
   discardCard(handPos, currentPlayer, state, 1);
   return 0;
 }
@@ -790,9 +752,13 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
   int tributeRevealedCards[2] = {-1, -1};
   int temphand[MAX_HAND];// moved above the if statement
+  int drawntreasure=0;
+  int cardDrawn;
+  int z = 0;// this is the counter for the temp hand
   if (nextPlayer > (state->numPlayers - 1)){
     nextPlayer = 0;
   }
+  
 
   //uses switch to select card and perform actions
   switch( card ) 
@@ -860,8 +826,40 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return -1;
 			
     case mine:
-      return mineEffect(state, currentPlayer, handPos, choice1, choice2);
+      j = state->hand[currentPlayer][choice1];  //store card we will trash
 
+      if (state->hand[currentPlayer][choice1] < copper || state->hand[currentPlayer][choice1] > gold)
+	{
+	  return -1;
+	}
+		
+      if (choice2 > treasure_map || choice2 < curse)
+	{
+	  return -1;
+	}
+
+      if ( (getCost(state->hand[currentPlayer][choice1]) + 3) > getCost(choice2) )
+	{
+	  return -1;
+	}
+
+      gainCard(choice2, state, 2, currentPlayer);
+
+      //discard card from hand
+      discardCard(handPos, currentPlayer, state, 0);
+
+      //discard trashed card
+      for (i = 0; i < state->handCount[currentPlayer]; i++)
+	{
+	  if (state->hand[currentPlayer][i] == j)
+	    {
+	      discardCard(i, currentPlayer, state, 0);			
+	      break;
+	    }
+	}
+			
+      return 0;
+			
     case remodel:
       j = state->hand[currentPlayer][choice1];  //store card we will trash
 
