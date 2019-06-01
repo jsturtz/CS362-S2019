@@ -253,7 +253,7 @@ int main() {
   setDeck(&G, nonActive, 5);
   setHand(&G, active, handpos);                 // sets hand to ensure errors from initialization do not affect
   memcpy(&testG, &G, sizeof(struct gameState)); 
-  councilRoomEffect(&testG, active, handpos);   
+  cardEffect(council_room, 0, 0, 0, &testG, 0, 0);
 
   // runs the same tests for all inputs because these tests do not depend on particular input 
   runTests(active, nonActive, handpos, &G, &testG);
@@ -301,7 +301,7 @@ int main() {
   setDeck(&G, nonActive, 0);
   setHand(&G, active, handpos);                         // sets hand to ensure errors from initialization do not affect
   memcpy(&testG, &G, sizeof(struct gameState));         
-  councilRoomEffect(&testG, active, handpos); 
+  cardEffect(council_room, 0, 0, 0, &testG, 0, 0);
 
   // runs the same tests for all inputs because these tests do not depend on particular input 
   runTests(active, nonActive, handpos, &G, &testG);
