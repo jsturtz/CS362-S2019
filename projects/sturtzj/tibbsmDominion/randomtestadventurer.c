@@ -8,15 +8,77 @@
 #include <stdlib.h>
 
 #ifndef NUMTRIES
-#define NUMTRIES 1000000
+#define NUMTRIES 100000
 #endif
 
 #define STR(x) #x
 #ifndef ASSERT_TRUE
 #define ASSERT_TRUE(x) if (!(x)) { printf("Assert failed: (%s), line %d.\n", STR(x), __LINE__);}
 #endif 
- 
-// Will produce a random kingdom except first card will be adventurer
+
+/* struct cards { */
+/*   int copper;           // 60 max */
+/*   int silver;           // 40 max */
+/*   int gold;             // 30 max */
+
+/*   int estate;           // 24 max */
+/*   int duchy;            // 12 max */
+/*   int province;         // 12 max */
+/*   int curse;            // 30 max */
+
+/*   int kingdom[10]; */      
+/*   int *kIDs; */        
+/* }; */
+
+/* struct cards* newCards(int *kIDs, int numPlayers, int hasCurse) */ 
+/* { */
+
+/*   struct cards* newGame = malloc(sizeof(struct cards)); */
+/*   newGame->copper = 60; */
+/*   newGame->silver = 40; */
+/*   newGame->gold = 30; */
+  
+/*   switch (numPlayers) { */
+/*     case 2: */ 
+/*       newGame->estate   = 8  + (2 * 3); */
+/*       newGame->duchy    = 8; */
+/*       newGame->province = 8; */
+/*       if (hasCurse) newGame->curse = 20; */
+/*       break; */
+/*     case 3: */ 
+/*       newGame->estate   = 12  + (3 * 3); */
+/*       newGame->duchy    = 12; */
+/*       newGame->province = 12; */
+/*       if (hasCurse) newGame->curse = 30; */
+/*       break; */
+/*     case 4: */ 
+/*       newGame->estate   = 12  + (4 * 3); */
+/*       newGame->duchy    = 12; */
+/*       newGame->province = 12; */
+/*       if (hasCurse) newGame->curse = 40; */
+/*       break; */
+/*     default: */ 
+/*       return NULL; */
+/*   } */
+
+/*   if (!hasCurse) newGame->curse = 0; */
+
+/*   // give each kingdom card ten */
+/*   for (int k = 0; k < 10; k++) */ 
+/*   { */
+/*     newGame->kingdom[k] = 10; */
+/*   } */
+/*   // set pointer to kIDs */
+/*   newGame->kIDs = kIDs; */
+/*   return newGame; */
+/* } */
+
+/* void deleteCards(struct cards* cards) { */
+/*   free(cards); */
+/*   cards = NULL; */
+/* } */
+
+// Will produce a random kingdom except first card will be includeThisCard
 void randomKingdom(int k[10]) {
   int i = 0; 
   k[0] = adventurer;
@@ -53,11 +115,18 @@ void randomHand(struct gameState* state, int player, int maxSize) {
 
 // will produce a random discard for player wth up to maxSize elements
 void randomDiscard(struct gameState* state, int player, int maxSize) {
-  int discardSize = rand() % (maxSize + 1);
-  state->discardCount[player] = discardSize;
+  if (maxSize > 1) 
+  {
+    int discardSize = rand() % (maxSize - 1 );
+    state->discardCount[player] = discardSize;
 
-  for (int i = 0; i < discardSize; i++) {
-    state->discard[player][i] = rand() % (treasure_map+1);
+    for (int i = 0; i < discardSize; i++) {
+      state->discard[player][i] = rand() % (treasure_map+1);
+    }
+  }
+  else 
+  {
+    state->discardCount[player] = 0;
   }
 }
 
@@ -69,6 +138,7 @@ int main() {
   int i, j;
   int numPlayers, player;  
   int handpos;
+  int coinBonus = 0;
 
   int k[10];        // holds kingdom cards (always has adventurer)
   struct gameState G, testG;
@@ -92,25 +162,34 @@ int main() {
     /* // set random deck, hand, and discard for players */
     for (j = 0; j < numPlayers; j++) {
      
-      // randSpot needed to guarantee two treasures in deck 
+      // guarantee two spots for copper in deck
       randomDeck(&G, j, MAX_DECK);
-      int randSpot = rand() % (G.deckCount[j] - 1);
-      G.deck[j][randSpot] = copper;
-      G.deck[j][randSpot+1] = copper;
+      if (G.deckCount[j] >= 2) 
+      {
+        G.deck[j][0] = copper;
+        G.deck[j][1] = copper;
+      }
+      else 
+      {
+        G.discard[j][0] = copper;
+        G.discard[j][1] = copper;
+      }
 
       randomHand(&G, j, MAX_HAND - 1);
       G.hand[j][G.handCount[j]] = adventurer;
       G.handCount[j]++;
 
       // discard + deck shouldn't exceed MAX_DECK
+      /* printf("MAX_DECK - G.deckCount[j]: %d\n", MAX_DECK - G.deckCount[j]); */
       randomDiscard(&G, j, MAX_DECK - G.deckCount[j]);
     }
 
     // call adventurerCard
-    memcpy(&testG, &G, sizeof(struct gameState));
     player = rand() % numPlayers;
+    G.whoseTurn = player;
+    memcpy(&testG, &G, sizeof(struct gameState));
     handpos = G.handCount[player] - 1;
-    adventurerCard(&testG, player);
+    cardEffect(adventurer, 0, 0, 0, &testG, handpos, &coinBonus);
 
     // TESTS
     ASSERT_TRUE(testG.playedCardCount == G.playedCardCount + 1);

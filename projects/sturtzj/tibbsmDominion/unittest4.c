@@ -275,6 +275,7 @@ int main() {
   struct gameState G, testG, blankG;    // blankG = at first initialization, G = before function, testG = after function
   int handpos = 4;                      // village will be placed at last position in fresh hand of five
   int player = 0;                       // Player that uses card
+  int coinBonus = 0;
 
   // initialize a game state and player cards
   int k[10] = {adventurer, embargo, village, minion, mine, cutpurse, sea_hag, tribute, smithy, council_room};
@@ -288,8 +289,9 @@ int main() {
   
   setDeck(&G, player, 5);                       // set deck to have five coppers
   setHand(&G, player, handpos);                 // sets hand to ensure errors from initialization do not affect
+  G.whoseTurn = player;
   memcpy(&testG, &G, sizeof(struct gameState)); 
-  cardEffect(village, 0, 0, 0, &testG, 0, 0);
+  cardEffect(village, 0, 0, 0, &testG, handpos, &coinBonus);
 
   // runs the same tests for all inputs because these tests do not depend on particular input 
   runTests(player, handpos, &G, &testG);
@@ -312,8 +314,9 @@ int main() {
   
   setDeck(&G, player, 0);                       // set deck to be empty, but discard will have ten coppers
   setHand(&G, player, handpos);                 // sets hand to ensure errors from initialization do not affect
+  G.whoseTurn = player;
   memcpy(&testG, &G, sizeof(struct gameState)); 
-  cardEffect(village, 0, 0, 0, &testG, 0, 0);
+  cardEffect(village, 0, 0, 0, &testG, handpos, &coinBonus);
 
   // runs the same tests for all inputs because these tests do not depend on particular input 
   runTests(player, handpos, &G, &testG);

@@ -255,10 +255,11 @@ int main() {
     G.deck[player][G.deckCount[player]+i] = copper; 
   }
   G.deckCount[player] = G.deckCount[player] + 3;
-  
   setHand(&G, player, handpos);                 // sets hand to ensure errors from initialization do not affect
+  G.whoseTurn = player;                         // ensure player is one playing card
   memcpy(&testG, &G, sizeof(struct gameState)); // copy into new test variable
-  cardEffect(smithy, 0, 0, 0, &testG, 0, 0);
+
+  cardEffect(smithy, 0, 0, 0, &testG, handpos, 0);
 
   // runs the same tests for all inputs because these tests do not depend on particular input 
   runTests(player, handpos, &G, &testG);

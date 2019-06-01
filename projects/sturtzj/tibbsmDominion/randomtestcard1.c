@@ -87,6 +87,7 @@ int main() {
   int i, j;
   int numPlayers, player;  
   int handpos;
+  int coinBonus = 0;
 
   int k[10];        // holds kingdom cards (always has adventurer)
   struct gameState G, testG;
@@ -120,10 +121,12 @@ int main() {
     }
 
     // call smithyEffect
-    memcpy(&testG, &G, sizeof(struct gameState));
     player = rand() % numPlayers;
+    G.whoseTurn = player;
+    memcpy(&testG, &G, sizeof(struct gameState));
     handpos = G.handCount[player] - 1;
-    smithyCard(&testG, player, handpos);
+    cardEffect(smithy, 0, 0, 0, &testG, handpos, &coinBonus);
+    /* smithyCard(&testG, player, handpos); */
 
     // INPUT INDEPENDENT TESTS
     ASSERT_TRUE(testG.handCount[player] == G.handCount[player] + 2);

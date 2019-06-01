@@ -59,7 +59,7 @@ Input Case 1: Deck has more than three cards in it
 	PASSED: Total card count is the same: deck + discard + hand + played
 	PASSED: Non-player-related gamestate has not changed
 	PASSED: Other player variables have not been affected
-	❌FAILED: Smithy card was not properly played, i.e. added to playedCard array
+	PASSED: Smithy card was properly played, i.e. smithy added to playedCard array
 	❌FAILED: Cards added to hand do not match top three cards of deck
 	❌FAILED: Deck has not decreased by exactly three
 	PASSED: Discard pile has not changed
@@ -95,9 +95,9 @@ Input Case 1: Deck has more than four cards in it for active, more than one for 
 	PASSED: For player 1, original cards in hand unchanged except for council room played
 	PASSED: For player 0, total card count is the same
 	PASSED: For player 1, total card count is the same
-	❌FAILED: Council Room card was not properly played, i.e. added to playedCard array
+	PASSED: Council Room card was properly played, i.e. added to playedCard array
 	PASSED: Non-player-related gamestate has not changed except for numBuys
-	❌FAILED: Cards added to hand do not match top four cards of deck
+	PASSED: Cards added to hand match top four cards of deck
 	PASSED: For player 1, new card matches top of deck
 	PASSED: For player 0, deck has decreased by exactly four
 	PASSED: For player 1, deck has decreased by exactly one
@@ -110,7 +110,7 @@ Input Case 2: Active player has three cards in deck and non active has zero
 	PASSED: For player 1, original cards in hand unchanged except for council room played
 	PASSED: For player 0, total card count is the same
 	PASSED: For player 1, total card count is the same
-	❌FAILED: Council Room card was not properly played, i.e. added to playedCard array
+	PASSED: Council Room card was properly played, i.e. added to playedCard array
 	PASSED: Non-player-related gamestate has not changed except for numBuys
 	PASSED: For player 0, the three remaining cards on deck were added to hand
 	PASSED: For player 0, discard count is 0
@@ -149,17 +149,17 @@ Input Case 1: Deck has at least one card
 	PASSED: HandCount increased by 0
 	PASSED: Original cards in hand unchanged except for village played
 	PASSED: Total card count is the same
-	❌FAILED: Village card was not properly played, i.e. added to playedCard array
+	PASSED: Village card was properly played, i.e. added to playedCard array
 	❌FAILED: Gamestate numActions has not increased by 2
 	PASSED: Other player variables have not been affected
-	❌FAILED: Card added to hand does not match top of deck
+	PASSED: Top card in hand equals top of deck
 	PASSED: Deckcount decreased by 1
 	PASSED: Discard pile has not changed
 Input Case 2: Deck has no cards
 	PASSED: HandCount increased by 0
 	PASSED: Original cards in hand unchanged except for village played
 	PASSED: Total card count is the same
-	❌FAILED: Village card was not properly played, i.e. added to playedCard array
+	PASSED: Village card was properly played, i.e. added to playedCard array
 	❌FAILED: Gamestate numActions has not increased by 2
 	PASSED: Other player variables have not been affected
 	PASSED: Discard count is 0

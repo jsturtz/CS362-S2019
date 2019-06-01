@@ -233,6 +233,7 @@ int main() {
   int numPlayers = 2;                   // numPlayers
   int active = 0;                       // active player will use council room
   int nonActive = 1;                    // nonactive will get benefit of +1 Card
+  int coinBonus = 0;
   struct gameState G, testG, blankG;    // blankG = at first initialization, G = before function, testG = after function
   int handpos = 4;                      // council room will be placed at last position in fresh hand of five
 
@@ -251,8 +252,11 @@ int main() {
   setDeck(&G, active, 5);                       // set both decks to have five copper
   setDeck(&G, nonActive, 5);
   setHand(&G, active, handpos);            // sets hand to ensure errors from initialization do not affect
+  G.whoseTurn = active;
   memcpy(&testG, &G, sizeof(struct gameState)); 
-  councilRoomCard(&testG, active, handpos);
+
+  /* councilRoomCard(&testG, active, handpos); */
+  cardEffect(council_room, 0, 0, 0, &testG, handpos, &coinBonus);
 
   // runs the same tests for all inputs because these tests do not depend on particular input 
   runTests(active, nonActive, handpos, &G, &testG);
@@ -299,8 +303,11 @@ int main() {
   setDeck(&G, active, 3);                               // will set deck to value and also add ten coppers to discard
   setDeck(&G, nonActive, 0);
   setHand(&G, active, handpos);                         // sets hand to ensure errors from initialization do not affect
-  memcpy(&testG, &G, sizeof(struct gameState));         
-  councilRoomCard(&testG, active, handpos);
+  G.whoseTurn = active;
+  memcpy(&testG, &G, sizeof(struct gameState)); 
+
+  /* councilRoomCard(&testG, active, handpos); */
+  cardEffect(council_room, 0, 0, 0, &testG, handpos, &coinBonus);
 
   // runs the same tests for all inputs because these tests do not depend on particular input 
   runTests(active, nonActive, handpos, &G, &testG);

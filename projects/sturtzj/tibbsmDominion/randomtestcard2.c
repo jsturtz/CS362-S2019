@@ -87,6 +87,7 @@ int main() {
   int i, j;
   int numPlayers, player;  
   int handpos;
+  int coinBonus = 0;
 
   int k[10];        // holds kingdom cards (always has adventurer)
   struct gameState G, testG;
@@ -120,10 +121,13 @@ int main() {
     }
 
     // call councilRoomEffect
-    memcpy(&testG, &G, sizeof(struct gameState));
     player = rand() % numPlayers;
+    G.whoseTurn = player;
     handpos = G.handCount[player] - 1;
-    councilRoomCard(&testG, player, handpos);
+    memcpy(&testG, &G, sizeof(struct gameState));
+    
+    cardEffect(council_room, 0, 0, 0, &testG, handpos, &coinBonus);
+    /* councilRoomCard(&testG, player, handpos); */
 
     // TESTS START HERE
     ASSERT_TRUE(testG.handCount[player] == G.handCount[player] + 3);

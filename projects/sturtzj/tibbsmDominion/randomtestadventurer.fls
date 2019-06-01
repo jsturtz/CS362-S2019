@@ -1,0 +1,7 @@
+PWD /home/jordan/Documents/OSUFiles/spring2019/CS362-S2019/projects/sturtzj/tibbsmDominion
+INPUT /etc/texmf/web2c/texmf.cnf
+INPUT /usr/share/texmf/web2c/texmf.cnf
+INPUT /usr/share/texlive/texmf-dist/web2c/texmf.cnf
+INPUT /var/lib/texmf/web2c/pdftex/pdflatex.fmt
+INPUT randomtestadventurer.c
+OUTPUT randomtestadventurer.log

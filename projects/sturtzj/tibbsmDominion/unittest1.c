@@ -242,6 +242,7 @@ int main() {
   int numPlayers = 4;                   // numPlayers
   int player = 0;                       // all tests will be performed on first player
   int handpos;                          // used to indicate handposition of adventurer
+  int coinBonus = 0;
   struct gameState G, testG, blankG;    // blankG = at first initialization, G = before function, testG = after function
 
 
@@ -262,8 +263,10 @@ int main() {
   G.hand[player][handpos] = adventurer;     
   G.handCount[player]++;                                
   
-  memcpy(&testG, &G, sizeof(struct gameState));         // copy state into testG
-  adventurerCard(&testG, player, handpos);
+  G.whoseTurn = player;                                 // ensure player is one playing card
+  memcpy(&testG, &G, sizeof(struct gameState));         // copy to testG
+  cardEffect(adventurer, 0, 0, 0, &testG, handpos, &coinBonus);
+
   runTests(player, handpos, &G, &testG);                // runs same tests for all inputs
   
   // TEST: Player draws cards until and only until second treasure is found in deck
@@ -297,9 +300,11 @@ int main() {
   handpos = G.handCount[player];                        // add adventurer to hand 
   G.hand[player][handpos] = adventurer;     
   G.handCount[player]++;                                
+
+  G.whoseTurn = player;                                 // ensure player is one playing card
+  memcpy(&testG, &G, sizeof(struct gameState));         // copy to testG
   
-  memcpy(&testG, &G, sizeof(struct gameState));         
-  cardEffect(adventurer, 0, 0, 0, &testG, 0, 0);
+  cardEffect(adventurer, 0, 0, 0, &testG, handpos, &coinBonus);
 
   runTests(player, handpos, &G, &testG);                // runs same tests for all inputs
 
